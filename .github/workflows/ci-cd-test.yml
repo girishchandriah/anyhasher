@@ -1,0 +1,29 @@
+name: CI/CD Workflow for our class
+
+on:
+  push:
+    branches: olt
+
+jobs:
+  build:
+    name: Build Frontend Artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ensure Node Version
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 16.x
+
+      - name: Install deps
+        run: cd frontend && npm i 
+
+      - name: Compile code
+        run: cd frontend && npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/build
